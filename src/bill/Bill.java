@@ -5,6 +5,7 @@
  */
 package bill;
 
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +38,8 @@ public class Bill extends Application {
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(5, 5, 5, 5));
         Button gen = new Button("Generate");
-        box.getChildren().add(gen);
+        //Button exit = new Button("Exit");
+        box.getChildren().addAll(gen);
 
         //HBox for product
         HBox pBox = new HBox(20);
@@ -54,28 +57,28 @@ public class Bill extends Application {
         qBox.setPadding(new Insets(5, 5, 5, 5));
         qBox.getChildren().addAll(q, qtf);
 
-      /**  //HBox for result
-        HBox rBox = new HBox(20);
-        Label r = new Label("Result");
-        TextArea displayArea = new TextArea();
-        displayArea.setPrefSize(150, 150);
-        rBox.setAlignment(Pos.CENTER_LEFT);
-        rBox.setPadding(new Insets(5, 5, 5, 5));
-        rBox.getChildren().addAll(r, displayArea);**/
-
+        /**
+         * //HBox for result HBox rBox = new HBox(20); Label r = new
+         * Label("Result"); TextArea displayArea = new TextArea();
+         * displayArea.setPrefSize(150, 150);
+         * rBox.setAlignment(Pos.CENTER_LEFT); rBox.setPadding(new Insets(5, 5,
+         * 5, 5)); rBox.getChildren().addAll(r, displayArea);*
+         */
         //declaring HBoxes in grid pane
         GridPane gp = new GridPane();
         gp.setAlignment(Pos.CENTER);
         gp.setPadding(new Insets(5, 5, 5, 5));
         gp.add(pBox, 0, 0);
         gp.add(qBox, 0, 1);
-       // gp.add(rBox, 0, 2);
+        // gp.add(rBox, 0, 2);
+
+       
 
         gen.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String productCode = "";
-                String pQuantity ="";
+                String pQuantity = "";
                 if (ptf.getText() != null) {
                     productCode = ptf.getText();
                 } else {
@@ -96,7 +99,22 @@ public class Bill extends Application {
                 }
 
                 if (Product.compareInFile(productCode)) {
+                     boolean e = false;
+                    do {
                         Product.getInfo(productCode, pQuantity);
+
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Successfully added");
+                        alert.setHeaderText("Do you want to add more items?");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.OK) {
+                          Product.getInfo(productCode, pQuantity);
+                        } else {
+                           e = true;
+                        }
+                    } while (e != true);
+
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error !");
