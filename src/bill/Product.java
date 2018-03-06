@@ -28,7 +28,7 @@ public class Product {
         Date d = new Date();
         printWriter.println("Date: "+d);
         printWriter.println(quantity+"  "+code+"    "+name+"    "+price);
-        double sumTotal = Double.parseDouble(quantity)*Double.parseDouble(price);
+        double sumTotal = (Double.parseDouble(quantity)*Double.parseDouble(price));
         printWriter.println("Subtotal   "+sumTotal);
         System.out.println("Sumtotal="+sumTotal);
         double taxes = sumTotal*0.13;

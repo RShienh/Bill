@@ -1,5 +1,5 @@
-Bill #9335
-Date: Mon Mar 05 22:56:01 EST 2018
+Bill #6780
+Date: Mon Mar 05 23:22:25 EST 2018
 10  12    nameSoap    10
 Subtotal   100.0
 Taxes @13%     13.0

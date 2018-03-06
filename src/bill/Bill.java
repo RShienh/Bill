@@ -7,6 +7,7 @@ package bill;
 
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -72,8 +73,6 @@ public class Bill extends Application {
         gp.add(qBox, 0, 1);
         // gp.add(rBox, 0, 2);
 
-       
-
         gen.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -99,19 +98,21 @@ public class Bill extends Application {
                 }
 
                 if (Product.compareInFile(productCode)) {
-                     boolean e = false;
+                    boolean e = false;
                     do {
                         Product.getInfo(productCode, pQuantity);
 
                         Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Successfully added");
                         alert.setHeaderText("Do you want to add more items?");
-
+                        ButtonType y = new ButtonType("Yes");
+                        ButtonType n = new ButtonType("No");
+                        alert.getButtonTypes().setAll(y, n);
                         Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {
-                          Product.getInfo(productCode, pQuantity);
-                        } else {
-                           e = true;
+                        if (result.get() == y) {
+                            e=true;
+                        } else if (result.get() == n) {
+                            Platform.exit();
                         }
                     } while (e != true);
 
